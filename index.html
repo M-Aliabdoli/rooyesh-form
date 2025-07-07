@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+
+<html lang="fa">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<link href="styles.css" rel="stylesheet"/>
+<title>رویش</title>
+<style>
+    @font-face {
+      font-family: 'BNazanin';
+      src: url('BNazanin.woff') format('woff');
+    }
+
+    body {
+      font-family: 'BNazanin', Tahoma, sans-serif;
+      direction: rtl;
+    }
+
+    label {
+      display: block;
+      margin-top: 10px;
+    }
+  </style>
+</head>
+<body>
+<h1 id="title">رویـــــــــش</h1>
+<p id="description">«روایــت واگــویــــه‌هـــای یـــــک شـــخـص»</p>
+<form id="survey-form">
+<fieldset>
+<label for="name">نام و نام خانوادگی:</label>
+<input id="name" placeholder="نام خود را وارد کنید" required="" type="text"/>
+<label for="email">ایمیل:</label>
+<input id="email" placeholder="ایمیل خود را وارد کنید" required="" type="email"/>
+<label for="number">سن:</label>
+<input id="number" max="120" min="18" placeholder="سن خود را وارد کنید" required="" type="number"/><label for="province">استان:</label><input id="province" name="province" placeholder="مثلاً تهران" required="True" type="text"/><label for="city">شهر:</label><input id="city" name="city" placeholder="مثلاً شهریار" required="True" type="text"/>
+<label for="dropdown">جنسیت:</label>
+<select id="dropdown" required="">
+<option value="">(انتخاب کنید)</option>
+<option value="1">مرد</option>
+<option value="2">زن</option>
+</select>
+<label for="marriage">وضعیت تأهل:</label><select id="marriage" name="marriage" required="True"><option value="">(انتخاب کنید)</option><option value="single">مجرد</option><option value="married">متأهل</option><option value="divorced">مطلقه</option></select><label for="fertility_problem">سابقه مشکلات باروری در خانواده:</label><select id="fertility_problem" name="fertility_problem" required="True"><option value="">(انتخاب کنید)</option><option value="yes">بله</option><option value="no">خیر</option></select>
+<label for="height">قد (سانتی‌متر):</label>
+<input id="height" max="250" min="50" placeholder="مثلاً 170" required="" type="number"/>
+<label for="weight">وزن (کیلوگرم):</label>
+<input id="weight" max="250" min="20" placeholder="مثلاً 65" required="" type="number"/>
+<label for="bmi">شاخص توده بدنی (BMI):</label>
+<input id="bmi" placeholder="محاسبه می‌شود..." readonly="" style="background-color:#f0f0f0;" type="text"/>
+<label for="field">رشته:</label>
+<input id="field" placeholder="مثلاً پزشکی" required="" type="text"/>
+<label for="education">سطح تحصیلات:</label>
+<input id="education" placeholder="مثلاً کارشناسی ارشد" required="" type="text"/>
+<label for="character">ویژگی های بارز اخلاقی:</label>
+<input id="character" placeholder="به عنوان مثال: کمال‌گرا، مضطرب، اجتماعی..." required="" rows="2"/>
+<h3>ویژگی اقتصادی</h3>
+<label for="job">شاغل هستید؟</label><select id="job" name="job" required="True"><option value="">(انتخاب کنید)</option><option value="yes">هستم</option><option value="no">نیستم</option></select><label for="has_income">آیا درآمد دارید؟</label><select id="has_income" name="has_income" required="True"><option value="">(انتخاب کنید)</option><option value="yes">دارم</option><option value="no">ندارم</option></select>
+<label for="salary">حقوق ماهیانه (تومان):</label>
+<input id="salary" min="0" placeholder="مثلاً ۱۰٬۰۰۰٬۰۰۰" required="" type="number"/>
+<h3>موانع باروری</h3>
+<label for="barrier_work">کاری:</label>
+<input id="barrier_work" placeholder="مثلاً چالش‌های محیط کار..." rows="2"/>
+<label for="barrier_mental">روانی:</label>
+<input id="barrier_mental" placeholder="مثلاً ترس‌ها و نگرانی‌های دوران باروری..." rows="2"/>
+<label for="barrier_health">سلامتی:</label>
+<input id="barrier_health" placeholder="مثلاً مشکلات پزشکی، بیماری خاص..." rows="2"/>
+<label for="barrier_social">اجتماعی:</label>
+<input id="barrier_social" placeholder="مثلاً فشار خانواده یا جامعه..." rows="2"/>
+<label for="has_motivation">انگیزه برای فرزندآوری:</label><select id="has_motivation" name="has_motivation" required="True"><option value="">(انتخاب کنید)</option><option value="yes">دارم</option><option value="no">ندارم</option></select>
+<label for="motivation_bio">بیولوژیک:</label>
+<input id="motivation_bio" placeholder="مثلاً کاهش کیفیت باروری با افزایش سن..." rows="2"/>
+<label for="motivation_social">اجتماعی:</label>
+<input id="motivation_social" placeholder="مثلاً ایفای نقش اجتماعی پدر یا مادر..." rows="2"/>
+<label for="motivation_cultural">فرهنگی:</label>
+<input id="motivation_cultural" placeholder="مثلاً حفظ اصالت خانوادگی..." rows="2"/>
+<label for="motivation_religious">مذهبی:</label>
+<input id="motivation_religious" placeholder="مثلاً توصیه دینی، ثواب..." rows="2"/>
+</fieldset>
+<input id="submit" type="submit" value="ارسال"/>
+</form>
+<script>
+    let allProvinces = [];
+
+fetch('iran_cities_with_coordinates.json')
+  .then(response => response.json())
+  .then(data => {
+    allProvinces = data;
+    const provinceSelect = document.getElementById("province");
+    provinceSelect.innerHTML = '<option value="">انتخاب استان</option>';
+
+    data.forEach(province => {
+      const option = document.createElement("option");
+      option.value = province.name;
+      option.text = province.name;
+      provinceSelect.appendChild(option);
+    });
+  })
+  .catch(err => {
+    console.error("خطا در بارگذاری استان‌ها:", err);
+    alert("مشکل در بارگذاری لیست استان‌ها");
+  });
+
+function updateCities() {
+  const selectedProvince = document.getElementById("province").value;
+  const citySelect = document.getElementById("city");
+  citySelect.innerHTML = '<option value="">انتخاب شهر</option>';
+
+  const provinceData = allProvinces.find(p => p.name === selectedProvince);
+  if (provinceData && provinceData.cities) {
+    provinceData.cities.forEach(city => {
+      const option = document.createElement("option");
+      option.value = city.name;
+      option.text = city.name;
+      citySelect.appendChild(option);
+    });
+  }
+}
+
+
+    function calculateBMI() {
+      const height = parseFloat(document.getElementById("height").value);
+      const weight = parseFloat(document.getElementById("weight").value);
+      const bmiField = document.getElementById("bmi");
+
+      if (height > 0 && weight > 0) {
+        const bmi = weight / Math.pow(height / 100, 2);
+        bmiField.value = bmi.toFixed(2);
+      } else {
+        bmiField.value = "";
+      }
+    }
+
+    document.getElementById("height").addEventListener("input", calculateBMI);
+    document.getElementById("weight").addEventListener("input", calculateBMI);
+
+    document.getElementById("survey-form").addEventListener("submit", function(e) {e.preventDefault(); // جلوگیری از رفرش شدن صفحه;
+  this.reset(); // پاک‌سازی فرم
+});
+
+  
+function toggleSalary(enabled) {
+  const salaryField = document.getElementById("salary");
+  if (enabled) {
+    salaryField.disabled = false;
+  } else {
+    salaryField.disabled = true;
+    salaryField.value = 0;
+  }
+}
+
+</script>
+</body>
+</html>
