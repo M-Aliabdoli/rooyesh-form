@@ -8,6 +8,14 @@
 <title>رویش</title>
 <style>
 /* اضافه کردن انیمیشن و طراحی خوش‌آمدگویی */
+#welcome-logo {
+  width: 140px;
+  max-width: 50%;
+  margin-bottom: 20px;
+  border-radius: 50%;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
 #welcome-page {
   background: linear-gradient(135deg, #e0c3fc, #8ec5fc); /* یاسی تا آبی روشن */
   min-height: 100vh;
@@ -119,6 +127,7 @@ form {
 <body>
   <!-- صفحه خوش‌آمدگویی -->
   <div id="welcome-page" style="text-align: center; padding: 40px;">
+<img src="logo.png" alt="لوگوی رویش" id="welcome-logo" />
     <h1>به رویــــــــش خوش اومدی!</h1>
     <p style="font-size: 20px; margin-top: 20px;">
       تا حالا شده حس کنی نمی‌دونی زمان مناسب بچه‌دار شدن کیه؟<br/>
@@ -143,7 +152,7 @@ form {
  <!-- فرم اصلی -->
   <div id="form-page" style="display: none;">
 <div id="form-bg"></div>
-<h1 id="title">رویـــــــــش</h1>
+<h1 id="title">رویـــــــــش (نسخه بتا)</h1>
 <p id="description">«روایــت واگــویــــه‌هـــای یـــــک شـــخـص»</p>
 <form id="survey-form">
 <fieldset>
@@ -221,9 +230,15 @@ form {
     document.getElementById("height").addEventListener("input", calculateBMI);
     document.getElementById("weight").addEventListener("input", calculateBMI);
 
-    document.getElementById("survey-form").addEventListener("submit", function(e) {e.preventDefault(); // جلوگیری از رفرش شدن صفحه;
-  this.reset(); // پاک‌سازی فرم
+document.getElementById("survey-form").addEventListener("submit", function(e) {
+  e.preventDefault();
+  
+  // ارسال داده‌ها به سرور (اگر نیاز بود اینجا اضافه میشه)
+
+  // انتقال به صفحه تشکر
+  window.location.href = "thankyou.html";
 });
+
 
   
 function toggleSalary(enabled) {
