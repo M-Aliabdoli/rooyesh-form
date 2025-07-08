@@ -7,6 +7,99 @@
 <link href="styles.css" rel="stylesheet"/>
 <title>رویش</title>
 <style>
+/* اضافه کردن انیمیشن و طراحی خوش‌آمدگویی */
+#welcome-page {
+  background: linear-gradient(135deg, #e0c3fc, #8ec5fc); /* یاسی تا آبی روشن */
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  color: #2e003e;
+  text-align: center;
+  animation: fadeIn 2s ease-in-out;
+  padding: 30px;
+}
+
+#welcome-page h1 {
+  font-size: 42px;
+  margin-bottom: 20px;
+}
+
+#welcome-page p {
+  font-size: 20px;
+  margin: 10px 0;
+  max-width: 600px;
+  line-height: 1.8;
+}
+
+#welcome-page button {
+  margin-top: 30px;
+  padding: 12px 40px;
+  font-size: 20px;
+  background-color: #004D40;
+  color: white;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: background 0.3s ease;
+}
+
+#welcome-page button:hover {
+  background-color: #00695C;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* پس‌زمینه پزشکی برای فرم */
+#form-page {
+  position: relative;
+  min-height: 100vh;
+  padding: 40px 20px;
+  background-color: #f7f9fc;
+  overflow: hidden;
+}
+
+#form-bg {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-image: url('e3a63c1f-4380-4fd0-be4c-6bc8b5410a98.avif');
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: bottom left;
+  opacity: 0.2;
+  z-index: 0;
+  pointer-events: none;
+}
+
+
+#form-page h1 {
+  text-align: center;
+  color: #004D40;
+}
+
+#form-page p {
+  text-align: center;
+  color: #00695C;
+}
+
+form {
+  position: relative;
+  z-index: 1;
+  max-width: 700px;
+  margin: 0 auto;
+  background-color: rgba(255, 255, 255, 0.95);
+  padding: 20px;
+  border-radius: 12px;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+}
+
     @font-face {
       font-family: 'BNazanin';
       src: url('BNazanin.woff') format('woff');
@@ -24,6 +117,32 @@
   </style>
 </head>
 <body>
+  <!-- صفحه خوش‌آمدگویی -->
+  <div id="welcome-page" style="text-align: center; padding: 40px;">
+    <h1>به رویــــــــش خوش اومدی!</h1>
+    <p style="font-size: 20px; margin-top: 20px;">
+      تا حالا شده حس کنی نمی‌دونی زمان مناسب بچه‌دار شدن کیه؟<br/>
+      یا بترسی که نکنه دیر بشه...
+    </p>
+    <p style="font-size: 18px; margin-top: 20px;">
+      ما اینجاییم تا بهت کمک کنیم بدون ترس، بدون فشار، انتخاب درست خودتو پیدا کنی.<br/>
+      چون فقط یه نفره که باید واقعاً تصمیم بگیره و اون خود تویی.
+    </p>
+    <p style="font-size: 18px; margin-top: 20px;">
+      فقط به چند تا سؤال ساده جواب بده،<br/>
+      و پادکستی بشنو که از دل ذهن خودت درباره باروری ساخته شده.
+    </p>
+    <p style="font-size: 18px; margin-top: 20px;">
+      آماده‌ای آینده‌تو واضح‌تر ببینی؟
+    </p>
+    <p style="color: gray; font-size: 16px; margin-top: 30px;">
+      اطلاعاتت محرمانه باقی خواهد ماند و هیچ قضاوتی در کار نیست.
+    </p>
+    <button onclick="enterSite()" style="margin-top: 30px; padding: 10px 30px; font-size: 18px; background-color: #4CAF50; color: white; border: none; border-radius: 8px; cursor: pointer;">شروع کن</button>
+  </div>
+ <!-- فرم اصلی -->
+  <div id="form-page" style="display: none;">
+<div id="form-bg"></div>
 <h1 id="title">رویـــــــــش</h1>
 <p id="description">«روایــت واگــویــــه‌هـــای یـــــک شـــخـص»</p>
 <form id="survey-form">
@@ -78,44 +197,13 @@
 </fieldset>
 <input id="submit" type="submit" value="ارسال"/>
 </form>
+</div>
 <script>
-    let allProvinces = [];
 
-fetch('iran_cities_with_coordinates.json')
-  .then(response => response.json())
-  .then(data => {
-    allProvinces = data;
-    const provinceSelect = document.getElementById("province");
-    provinceSelect.innerHTML = '<option value="">انتخاب استان</option>';
-
-    data.forEach(province => {
-      const option = document.createElement("option");
-      option.value = province.name;
-      option.text = province.name;
-      provinceSelect.appendChild(option);
-    });
-  })
-  .catch(err => {
-    console.error("خطا در بارگذاری استان‌ها:", err);
-    alert("مشکل در بارگذاری لیست استان‌ها");
-  });
-
-function updateCities() {
-  const selectedProvince = document.getElementById("province").value;
-  const citySelect = document.getElementById("city");
-  citySelect.innerHTML = '<option value="">انتخاب شهر</option>';
-
-  const provinceData = allProvinces.find(p => p.name === selectedProvince);
-  if (provinceData && provinceData.cities) {
-    provinceData.cities.forEach(city => {
-      const option = document.createElement("option");
-      option.value = city.name;
-      option.text = city.name;
-      citySelect.appendChild(option);
-    });
-  }
-}
-
+ function enterSite() {
+      document.getElementById("welcome-page").style.display = "none";
+      document.getElementById("form-page").style.display = "block";
+    }
 
     function calculateBMI() {
       const height = parseFloat(document.getElementById("height").value);
